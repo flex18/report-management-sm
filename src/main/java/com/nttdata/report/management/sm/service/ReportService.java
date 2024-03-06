@@ -15,8 +15,12 @@ import reactor.core.publisher.Flux;
 @Service
 public class ReportService {
 
+  private final ReactiveMongoTemplate reactiveMongoTemplate;
+
   @Autowired
-  ReactiveMongoTemplate reactiveMongoTemplate;
+  public ReportService(ReactiveMongoTemplate reactiveMongoTemplate) {
+    this.reactiveMongoTemplate = reactiveMongoTemplate;
+  }
 
   public Flux<Map<String, BigDecimal>> ReportOfAllCommissionsChargedByProductInTheCurrentMonth() {
     LocalDateTime startDate = LocalDateTime.now().withDayOfMonth(1);
@@ -25,9 +29,9 @@ public class ReportService {
     return reactiveMongoTemplate.find(
         Query.query(Criteria.where("date").gte(startDate).lte(toDate)),
         Commission.class
-    ).collectList().map(commsions -> {
+    ).collectList().map(commissions -> {
       Map<String, BigDecimal> report = new HashMap<>();
-      for (Commission c : commsions) {
+      for (Commission c : commissions) {
         report.put(c.getTransactionType(), report.getOrDefault(c.getTransactionType(), BigDecimal.ZERO).add(c.getAmount()));
       }
       return report;

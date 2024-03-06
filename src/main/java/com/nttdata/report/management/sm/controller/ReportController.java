@@ -16,7 +16,7 @@ public class ReportController {
   @Autowired
   ReportService reportService;
 
-  @GetMapping("/comisiones-cobradas-mes-actual")
+  @GetMapping("/commissions-charged-current-month")
   public Flux<Map<String, BigDecimal>> getReportOfAllCommissionsChargedByProductInTheCurrentMonth() {
     return reportService.ReportOfAllCommissionsChargedByProductInTheCurrentMonth();
   }
