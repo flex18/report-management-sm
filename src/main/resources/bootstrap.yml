@@ -3,6 +3,21 @@ server:
 spring:
   application:
     name: report-management-ms
+  cloud:
+    config:
+      label: ${BRANCH_GIT:master}
+      name: report-management-ms
+      discovery:
+        service-id: config_server
+        enabled: true
+      fail-fast: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:${EUREKA_PORT:8761}/eureka}
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
 # config for mongodb
 mongo:
   db: ${MONGO_DB:commissionDB}
